@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -34,8 +35,14 @@ namespace DataKit.Server.Listener
             var hello = await _clientReader.ReadLineAsync();
             // TODO: parse hello
             // send ack
-            await _clientWriter.WriteLineAsync("$hi|ack");
+            var clientGuid = Guid.NewGuid().ToString("N");
+            await _clientWriter.WriteLineAsync($"ACK|{clientGuid}");
             await _clientWriter.FlushAsync();
+            // Register the client
+            _clients.Add(new ConnectedClient(_clientReader, _clientWriter)
+            {
+                Uid = clientGuid
+            });
         }
     }
 }
