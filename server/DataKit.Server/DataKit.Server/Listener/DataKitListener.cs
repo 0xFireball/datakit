@@ -31,7 +31,11 @@ namespace DataKit.Server.Listener
             var _clientWriter = new StreamWriter(client.GetStream());
             var _clientReader = new StreamReader(client.GetStream());
 
-
+            var hello = await _clientReader.ReadLineAsync();
+            // TODO: parse hello
+            // send ack
+            await _clientWriter.WriteLineAsync("$hi|ack");
+            await _clientWriter.FlushAsync();
         }
     }
 }
