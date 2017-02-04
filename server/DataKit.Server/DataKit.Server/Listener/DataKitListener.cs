@@ -13,8 +13,8 @@ namespace DataKit.Server.Listener
     public class DataKitListener
     {
         private readonly TcpListener _hostSocket;
-        private readonly ConcurrentBag<ConnectedClient> _clients;
-        private ConcurrentBag<DataChannel> _channels;
+        private readonly List<ConnectedClient> _clients;
+        private List<DataReceiver> _receivers;
 
 
         public DataKitListener(TcpListener hostSocket)
@@ -58,13 +58,23 @@ namespace DataKit.Server.Listener
             });
         }
 
-        public string CreateListenerChannel(string id)
+        public string CreateListenerChannel(string deviceId)
         {
-            var sensorClient = _clients.FirstOrDefault(x => x.Uid == id);
+            var sensorClient = _clients.FirstOrDefault(x => x.Uid == deviceId);
+            if (sensorClient == null) return null;
             var receiver = new DataReceiver(sensorClient);
             var channel = receiver.Channel;
-            _channels.Add(channel);
+            _receivers.Add(receiver);
             return channel.Identifier;
+        }
+
+        public DataReceiver GetReceiver(string channelId) => _receivers.FirstOrDefault(
+            x => x.Channel.Identifier == channelId);
+
+        public void DestroyListenerChannel(string deviceId)
+        {
+            var sensorClient = _clients.FirstOrDefault(x => x.Uid == deviceId);
+            _clients.Remove(sensorClient);
         }
     }
 }

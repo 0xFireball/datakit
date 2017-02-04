@@ -1,9 +1,10 @@
-﻿using Nancy;
+﻿using System;
+using Nancy;
 using DataKit.Server.Utilities;
 
 namespace DataKit.Server.Modules
 {
-    public class DataControlModule : NancyModule
+    public sealed class DataControlModule : NancyModule
     {
         public DataControlModule() : base("/r")
         {
@@ -14,11 +15,59 @@ namespace DataKit.Server.Modules
                 return Response.AsJsonNet(clients);
             });
 
-            Post("/createchannel/{id}", async args =>
+            Post("/createchannel/{deviceId}", async args =>
             {
-                var id = (string) args.id;
-                var channelId = listener.CreateListenerChannel(id);
+                var deviceId = (string) args.deviceId;
+                var channelId = listener.CreateListenerChannel(deviceId);
+                if (channelId == null) return HttpStatusCode.BadRequest;
                 return channelId;
+            });
+
+            Post("/channel/{id}/start", args =>
+            {
+                try
+                {
+                    var receiver = listener.GetReceiver((string) args.id);
+                    receiver.StartCollection();
+                    return HttpStatusCode.OK;
+                }
+                catch (Exception e)
+                {
+                    return HttpStatusCode.BadRequest;
+                }
+            });
+
+            Post("/channel/{id}/stop", args =>
+            {
+                try
+                {
+                    var receiver = listener.GetReceiver((string) args.id);
+                    receiver.StopCollection();
+                    return HttpStatusCode.OK;
+                }
+                catch (Exception e)
+                {
+                    return HttpStatusCode.BadRequest;
+                }
+            });
+
+            Get("/channel/{id}/getdata", args =>
+            {
+                try
+                {
+                    var receiver = listener.GetReceiver((string) args.id);
+                    return Response.AsJsonNet(receiver.Channel.Data);
+                }
+                catch (Exception e)
+                {
+                    return HttpStatusCode.BadRequest;
+                }
+            });
+
+            Get("/destroychannel/{deviceId}", args =>
+            {
+                listener.DestroyListenerChannel((string) args.deviceId);
+                return HttpStatusCode.OK;
             });
         }
     }

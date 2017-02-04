@@ -5,13 +5,16 @@ namespace DataKit.Server.Listener.Client
 {
     public class ConnectedClient
     {
-        private readonly StreamReader _inputStream;
-        private readonly StreamWriter _outputStream;
+        [JsonIgnore]
+        public StreamReader Input { get; }
+
+        [JsonIgnore]
+        public StreamWriter Output { get; }
 
         public ConnectedClient(StreamReader inputStream, StreamWriter outputStream)
         {
-            _inputStream = inputStream;
-            _outputStream = outputStream;
+            Input = inputStream;
+            Output = outputStream;
         }
 
         [JsonProperty("id")]
