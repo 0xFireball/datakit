@@ -53,4 +53,39 @@ Initially, it is in STANDBY mode. When it receives a START it switches to SENDIN
 
 #### The START packet
 
-todo
+Sets the client to SENDING mode when the client receives this
+
+Example:
+
+`START`
+
+#### The STOP packet
+
+Example:
+
+Sets the client to STANDBY mode when the client receives this
+
+`STOP`
+
+### Data Transfer stage
+
+When in SENDING mode, the client runs a loop like this (pseudocode):
+
+```pseudo
+while SENDING:
+    GET DATA
+    SEND DATA OVER TCP
+    WAIT TIME
+```
+
+#### The DATA packet
+
+Format:
+
+1) Header (metadata)
+  - Sequence ID (reset when START received)
+1) Data
+
+Example:
+
+`16|1337.1337` + NEWLINE
