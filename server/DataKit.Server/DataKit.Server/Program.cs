@@ -22,6 +22,7 @@ namespace DataKit.Server
                 .AddJsonFile(Path.Combine(appDirectory, "hosting.json"), true)
                 .Build();
 
+
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseConfiguration(config)
@@ -39,7 +40,8 @@ namespace DataKit.Server
                 port = int.Parse(args[0]);
             }
             var listener = new DataKitListener(new TcpListener(IPAddress.Any, port));
-            // Start the listener on the async threadpool
+            DataKitRegistry.Listener = listener;
+                // Start the listener on the async threadpool
             listener.RunAsync();
         }
     }
