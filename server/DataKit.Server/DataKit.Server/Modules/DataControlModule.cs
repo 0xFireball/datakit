@@ -13,6 +13,13 @@ namespace DataKit.Server.Modules
                 var clients = listener.EnumerateClients();
                 return Response.AsJsonNet(clients);
             });
+
+            Post("/createchannel/{id}", async args =>
+            {
+                var id = (string) args.id;
+                var channelId = listener.CreateListenerChannel(id);
+                return channelId;
+            });
         }
     }
 }

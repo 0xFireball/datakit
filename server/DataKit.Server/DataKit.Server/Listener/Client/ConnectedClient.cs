@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
 {
@@ -13,6 +14,7 @@ namespace DataKit.Server.Listener.Client
             _outputStream = outputStream;
         }
 
+        [JsonProperty("id")]
         public string Uid { get; set; }
     }
 }

@@ -2,9 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using DataKit.Server.Listener.Client;
+using DataKit.Server.Listener.Logger;
 
 namespace DataKit.Server.Listener
 {
@@ -12,6 +14,7 @@ namespace DataKit.Server.Listener
     {
         private readonly TcpListener _hostSocket;
         private readonly ConcurrentBag<ConnectedClient> _clients;
+        private ConcurrentBag<DataChannel> _channels;
 
 
         public DataKitListener(TcpListener hostSocket)
@@ -53,6 +56,15 @@ namespace DataKit.Server.Listener
             {
                 Uid = clientGuid
             });
+        }
+
+        public string CreateListenerChannel(string id)
+        {
+            var sensorClient = _clients.FirstOrDefault(x => x.Uid == id);
+            var receiver = new DataReceiver(sensorClient);
+            var channel = receiver.Channel;
+            _channels.Add(channel);
+            return channel.Identifier;
         }
     }
 }
