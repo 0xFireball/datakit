@@ -26,12 +26,15 @@ namespace DataKit.Server.Listener
 
         public async Task RunAsync()
         {
-            _hostSocket.Start();
-            while (true)
+            await Task.Run(async () =>
             {
-                var client = await _hostSocket.AcceptTcpClientAsync();
-                BeginRegistration(client);
-            }
+                _hostSocket.Start();
+                while (true)
+                {
+                    var client = await _hostSocket.AcceptTcpClientAsync();
+                    BeginRegistration(client);
+                }
+            });
         }
 
         private async Task BeginRegistration(TcpClient client)
