@@ -10,6 +10,7 @@ connection is over tcp, language agnostic protocol
 ### Connection setup
 
 Connection setup consists of two parts: a HELLO packet and an ACK packet.
+The client sends the server a HELLO, and the server will respond with an ACK indicating that the connection is now valid.
 All data is followed by a UNIX NEWLINE! (`\n`)
 
 #### The HELLO packet
@@ -46,3 +47,10 @@ Example:
 ### Standby stage
 
 At this point, the client and server have established a connection, and the client is waiting for a signal to start streaming data to the server.
+
+The client has two states now, SENDING and STANDBY.
+Initially, it is in STANDBY mode. When it receives a START it switches to SENDING mode until it receives a STOP.
+
+#### The START packet
+
+todo

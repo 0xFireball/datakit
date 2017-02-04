@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -12,9 +13,15 @@ namespace DataKit.Server.Listener
         private readonly TcpListener _hostSocket;
         private readonly ConcurrentBag<ConnectedClient> _clients;
 
+
         public DataKitListener(TcpListener hostSocket)
         {
             _hostSocket = hostSocket;
+        }
+
+        public IEnumerable<ConnectedClient> EnumerateClients()
+        {
+            return _clients;
         }
 
         public async Task RunAsync()

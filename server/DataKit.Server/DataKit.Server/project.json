@@ -5,7 +5,6 @@
         "emitEntryPoint": true
     },
     "dependencies": {
-        "NetStandard.Library": "1.6.1"
     },
     "frameworks": {
         "netcoreapp1.1": {
