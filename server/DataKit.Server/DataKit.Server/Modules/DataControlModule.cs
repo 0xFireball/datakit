@@ -64,9 +64,9 @@ namespace DataKit.Server.Modules
                 }
             });
 
-            Get("/destroychannel/{deviceId}", args =>
+            Get("/destroychannel/{channelId}", args =>
             {
-                listener.DestroyListenerChannel((string) args.deviceId);
+                listener.DestroyListenerChannel((string) args.channelId);
                 return HttpStatusCode.OK;
             });
         }

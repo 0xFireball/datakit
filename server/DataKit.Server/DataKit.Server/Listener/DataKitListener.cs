@@ -71,10 +71,10 @@ namespace DataKit.Server.Listener
         public DataReceiver GetReceiver(string channelId) => _receivers.FirstOrDefault(
             x => x.Channel.Identifier == channelId);
 
-        public void DestroyListenerChannel(string deviceId)
+        public void DestroyListenerChannel(string channelId)
         {
-            var sensorClient = _clients.FirstOrDefault(x => x.Uid == deviceId);
-            _clients.Remove(sensorClient);
+            var receiver = _receivers.FirstOrDefault(x => x.Channel.Identifier == channelId);
+            _receivers.Remove(receiver);
         }
     }
 }
