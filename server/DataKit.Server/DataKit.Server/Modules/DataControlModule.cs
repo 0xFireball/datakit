@@ -15,12 +15,18 @@ namespace DataKit.Server.Modules
                 return Response.AsJsonNet(clients);
             });
 
-            Post("/createchannel/{deviceId}", async args =>
+            Post("/createchannel/{deviceId}", args =>
             {
                 var deviceId = (string) args.deviceId;
                 var channelId = listener.CreateListenerChannel(deviceId);
                 if (channelId == null) return HttpStatusCode.BadRequest;
                 return channelId;
+            });
+
+            Get("/destroychannel/{channelId}", args =>
+            {
+                listener.DestroyListenerChannel((string) args.channelId);
+                return HttpStatusCode.OK;
             });
 
             Post("/channel/{id}/start", args =>
@@ -62,12 +68,6 @@ namespace DataKit.Server.Modules
                 {
                     return HttpStatusCode.BadRequest;
                 }
-            });
-
-            Get("/destroychannel/{channelId}", args =>
-            {
-                listener.DestroyListenerChannel((string) args.channelId);
-                return HttpStatusCode.OK;
             });
         }
     }
