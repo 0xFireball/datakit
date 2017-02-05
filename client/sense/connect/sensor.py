@@ -36,18 +36,21 @@ class Sensor(object):
     def start_stop(self):
         while self.run:
             data = self.getpacket(self.sock).strip()
+            print(data)
             if data == "START":
-                go = True
+                self.go = True
                 self.follower.start()
             if data == "STOP":
-                go = False
+                print("Got STOP")
+                self.go = False
 
     # Reads and sends data (TODO:SEND DATA)
     def read_data(self):
         self.go = True
         while self.go:
-            self.sock.sendall(str(self.get_data()+'\n').endcode())
-            time.sleep(.1)
+            self.sock.sendall((str(">"+self.get_data())+'\n').encode())
+            print((str(self.get_data())+'\n'))
+            time.sleep(1)
 
     # Heartbeater
     def heartbeat(self):
