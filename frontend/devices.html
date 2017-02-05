@@ -3,24 +3,25 @@
 <body>
 	<title>Datakit</title>
 	<script src="./jquery-3.1.1.min.js"></script>
-	<script src="./vue.js"></script>
+	<!--<script src="./vue.js"></script>-->
 	<link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
 	<link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
 	<script src="./semantic/dist/semantic.min.js"></script>
 	<div id="dkbody">
-		<dkheader>test</dkheader>
+		<dkheader></dkheader>
 		<div class="ui grid" style="margin-left: 10px; margin-right: 10px; margin-top: -20px;">
 			<div class="ui segment sixteen wide column ">
 				<h1>Start Collecting Data</h1>
 				<table class="ui celled table">
 					<thead>
 						<tr>
-							<th class="two wide">ID</th>
 							<th>Name</th>
+							<th class="two wide">Units</th>
 							<th class="two wide">Connect</th>
 						</tr>
 					</thead>
-					<tbody v-for>
+					<tbody id="deviceList">
+						<dklist></dklist>
 					</tbody>
 				</table>
 			</div>
