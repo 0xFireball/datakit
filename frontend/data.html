@@ -15,12 +15,12 @@
 				<h1>Collect Data</h1>
 				<div class="ui stackable five column grid">
 					<!--Selectors and modifiers.-->
-					<div class="ui  five wide column">
+					<div class="ui five wide column">
 						<div class="ui labeled fluid input" >
 						  <div class="ui label">
-						    Time Scale
+						    Max Data Points
 						  </div>
-						  <input type="text" placeholder="10">
+						  <input type="text" id="dkdatapts" placeholder="20">
 						</div>
 						<br />
 						<div class="ui labeled fluid input">
@@ -29,6 +29,16 @@
 						  </div>
 						  <input type="text" placeholder="10">
 						</div>
+                        <br />
+                        <button class="ui primary button" id="dkstart" onclick="dk.pageFunctions.data.start()">
+                          Start
+                        </button>
+                        <button class="ui negative button" id="dkstop" onclick="dk.pageFunctions.data.stop()">
+                          Stop
+                        </button>
+                        <button class="ui button" onclick="dk.pageFunctions.data.updateSettings()">
+                          Update Settings
+                        </button>
 					</div>
 
 					<!--The Actual Chart.-->

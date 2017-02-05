@@ -25,8 +25,15 @@ var dk = {
                 var inp = inputs[i];
                 configToSave[inp.name] = inp.value;
             }
+            $.get("http://" + configToSave.dk_rpi_ip + ":" + config.dk_rpi_port + "/r/connected").done(function() {
+                $(".positive.message").removeClass("hidden");
+                $(".negative.message").addClass("hidden");
+            }).fail(function() {
+                $(".negative.message").removeClass("hidden");
+                $(".positive.message").addClass("hidden");
+            });
             window.localStorage.dk = JSON.stringify(configToSave);
-            $(".message").removeClass("hidden");
+            $(".positive.message").removeClass("hidden");
         },
         getURL: function() {
             return "http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port;
@@ -66,7 +73,7 @@ var dk = {
                         channel: channelID,
                         name: deviceName[val]
                     };
-                    $.post(dk.utils.getURL() + "/r/channel/" + channelID + "/start/");
+                    //$.post(dk.utils.getURL() + "/r/channel/" + channelID + "/start/");
                     newObj.ws = new WebSocket("ws" + dk.utils.getURL().substring(4) + "/ws");
                     newObj.ws.onopen = function() {
                         newObj.ws.send(">" + newObj.channel + "\n");
@@ -174,6 +181,27 @@ var dk = {
                     data: [
                     ]
                 }]
+            },
+            start: function() {
+                $("#dkstart").addClass("disabled");
+                $("#dkstop").removeClass("disabled");
+                var conns = dk.pageFunctions.data.deviceConnections;
+                for(var i = 0; i < conns.length; i++) {
+                    $.post(dk.utils.getURL() + "/r/channel/" + conns[i].channel + "/start/");
+                }
+
+            },
+            stop: function() {
+                $("#dkstart").removeClass("disabled");
+                $("#dkstop").addClass("disabled");
+                var conns = dk.pageFunctions.data.deviceConnections;
+                for(var i = 0; i < conns.length; i++) {
+                    $.post(dk.utils.getURL() + "/r/channel/" + conns[i].channel + "/stop/");
+                }
+
+            },
+            updateSettings: function() {
+                dk.pageFunctions.data.config.maxPoints = parseInt($("#dkdatapts").val());
             }
         }
     }
