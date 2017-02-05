@@ -63,7 +63,7 @@ namespace DataKit.Server.Listener
                 {
                     Name = clientName,
                     Units = units,
-                    DataType = dataType
+                    DataType = dataType,
                     Uid = clientGuid
                 });
             }
