@@ -95,7 +95,7 @@ var dk = {
 };
 
 
-var configLoaded = function (conf) {
+var onStart = function (conf) {
     /*config = JSON.parse(conf);
     console.log(config);*/
     var page = window.location.pathname.split("/").pop();
@@ -110,4 +110,4 @@ var configLoaded = function (conf) {
     dk.pages[page]();
 };
 
-$.get("config.json", configLoaded);
+onStart();
