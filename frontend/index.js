@@ -75,10 +75,8 @@ var dk = {
                         evt.data = JSON.parse(evt.data);
                         evt.data = JSON.parse(evt.data)
                         realData = JSON.parse(evt.data);
-                        //evt.data.device_name = newObj.name;
-                        //console.log(evt.data["timestamp"]);
-                        if(dk.pageFunctions.data.dataNames.indexOf(newObj.name) <= -1) dk.pageFunctions.data.dataNames.push(newObj.name);
-                        var datasetIdx = dk.pageFunctions.data.dataNames.indexOf(newObj.name);
+                        if(dk.pageFunctions.data.dataNames.indexOf(newObj.name) <= -1) dk.pageFunctions.data.dataNames.push(newObj.name + "_" + realData.tag);
+                        var datasetIdx = dk.pageFunctions.data.dataNames.indexOf(newObj.name + "_" + realData.tag);
                         var targSet = dk.pageFunctions.data.data.datasets[datasetIdx].data;
                         dk.pageFunctions.data.data.datasets[datasetIdx].label = newObj.name;
                         if(targSet.firstMark === undefined) targSet.firstMark = realData["timestamp"]
@@ -155,6 +153,18 @@ var dk = {
                     label: "",
                     fill: false,
                     borderColor: colorArray[0],
+                    data: [
+                    ]
+                }, {
+                    label: "",
+                    fill: false,
+                    borderColor: colorArray[5],
+                    data: [
+                    ]
+                }, {
+                    label: "",
+                    fill: false,
+                    borderColor: colorArray[5],
                     data: [
                     ]
                 }, {
