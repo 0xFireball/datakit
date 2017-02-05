@@ -29,7 +29,7 @@ Each of these sections, separated by a `|` character;
 
 Example:
 
-`$H|Super Sensor 1.5 someunits|stream` + NEWLINE
+`$H|Super Sensor 1.5 someunits|meters_per_second|lol|stream` + NEWLINE
 
 **followed by a UNIX newline (`\n`). The NEWLINE is the terminator of the message, and MUST be sent**
 
