@@ -53,6 +53,14 @@ At this point, the client and server have established a connection, and the clie
 The client has two states now, SENDING and STANDBY.
 Initially, it is in STANDBY mode. When it receives a START it switches to SENDING mode until it receives a STOP.
 
+Clients need to send a heartbeat packet at least every 10 seconds or they will be UNREGISTERED!
+
+#### The HEARTBEAT packet
+
+Example:
+
+`$P`
+
 #### The START packet
 
 Sets the client to SENDING mode when the client receives this
