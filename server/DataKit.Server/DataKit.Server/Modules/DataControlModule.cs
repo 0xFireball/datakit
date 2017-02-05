@@ -23,7 +23,7 @@ namespace DataKit.Server.Modules
                 return channelId;
             });
 
-            Get("/destroychannel/{channelId}", args =>
+            Post("/destroychannel/{channelId}", args =>
             {
                 listener.DestroyListenerChannel((string) args.channelId);
                 return HttpStatusCode.OK;
