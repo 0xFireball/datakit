@@ -26,7 +26,7 @@ var dk = {
                 configToSave[inp.name] = inp.value;
             }
             window.localStorage.dk = JSON.stringify(configToSave);
-            $(".message").removeClass("hidden"); 
+            $(".message").removeClass("hidden");
         },
         getURL: function() {
             return "http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port;
@@ -47,8 +47,13 @@ var dk = {
             });
         },
         data: function() {
+
+
             //Check if devices
-            //if(getQueryParams("devices") == null) window.location.href = "devices.html";
+            if(getQueryParams("devices") === null) window.location.href = "devices.html";
+
+            //Assemble Chart
+
             var deviceList = getQueryParams("devices").split(",");
             var deviceName = getQueryParams("names").split(",");
             console.log(deviceList);
