@@ -1,6 +1,6 @@
-from connect import sensor
+from connect.sensor import Sensor
 
 def testing():
     return "lol"
 
-sensor.Sensor("test", "test", testing)
+Sensor("name", "units", testing)
