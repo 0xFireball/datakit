@@ -1,6 +1,6 @@
 var config = null;
 
-var getQueryParams = function(name, url) {
+var getQueryParams = function (name, url) {
     if (!url) {
         url = window.location.href;
     }
@@ -15,10 +15,10 @@ var getQueryParams = function(name, url) {
 
 var dk = {
     utils: {
-        initStorage: function() {
+        initStorage: function () {
             window.localStorage.dk = window.localStorage.dk === undefined ? {} : window.localStorage.dk;
         },
-        saveConfig: function() {
+        saveConfig: function () {
             var inputs = $("input");
             var configToSave = {};
             for (var i = 0; i < inputs.length; i++) {
@@ -32,14 +32,14 @@ var dk = {
         }
     },
     pages: {
-        global: function() {
+        global: function () {
             config = JSON.parse(window.localStorage.dk);
             dk.utils.initStorage();
             $("dkheader").replaceWith('<div class="ui top fixed menu" style="position: static !important;"><a class="item" href="index.html"><strong>Data</strong>Kit</a><a class="item" href="devices.html">Devices</a><a class="item" href="config.html">Configure</a></div>');
         },
-        devices: function() {
-            $.get("http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port + "/r/connected", function(data) {
-                data.forEach(function(device) {
+        devices: function () {
+            $.get("http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port + "/r/connected", function (data) {
+                data.forEach(function (device) {
                     $("#deviceList").append("<tr><td>" + device.name + "</td><td>" + device.units + "</td><td class='ui checkbox'><input type='checkbox' name='" + device.id + "'><label>Include</label></td></tr>");
                 });
                 $(".checkbox").checkbox();
@@ -71,12 +71,12 @@ var dk = {
     },
     pageFunctions: {
         devices: {
-            clearDevices: function() {
+            clearDevices: function () {
 
             },
-            loadDevices: function() {
+            loadDevices: function () {
                 var deviceList = [];
-                $.each($(".checkbox"), function(device) {
+                $.each($(".checkbox"), function (device) {
                     device = $($(".checkbox")[device]);
                     if (device.checkbox('is checked')) {
                         deviceList.push(device.children().first().attr('name'));
@@ -93,7 +93,7 @@ var dk = {
 };
 
 
-var configLoaded = function(conf) {
+var configLoaded = function (conf) {
     config = JSON.parse(conf);
     console.log(config);
     var page = window.location.pathname.split("/").pop();

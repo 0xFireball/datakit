@@ -49,7 +49,7 @@ namespace DataKit.Server.Web
                         await _ws.SendAsync(
                             new ArraySegment<byte>(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(recvDataPacket))),
                             WebSocketMessageType.Text,
-                            false,
+                            true,
                             CancellationToken.None
                         );
                         return false;
