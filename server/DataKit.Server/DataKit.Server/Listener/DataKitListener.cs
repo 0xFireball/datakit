@@ -43,24 +43,24 @@ namespace DataKit.Server.Listener
             {
                 while (true)
                 {
-                    lock (_clients)
-                    {
-                        var deadClients = new List<ConnectedClient>();
-                        foreach (var client in _clients)
-                        {
-                            if (DateTime.Now - client.LastHeartbeat > TimeSpan.FromSeconds(10))
-                            {
-                                deadClients.Add(client);
-                            }
-                        }
-                        foreach (var dc in deadClients)
-                        {
-                            dc.Socket.Dispose();
-                            _clients.Remove(dc);
-                        }
-                    }
+                    // lock (_clients)
+                    // {
+                    //     var deadClients = new List<ConnectedClient>();
+                    //     foreach (var client in _clients)
+                    //     {
+                    //         if (DateTime.Now - client.LastHeartbeat > TimeSpan.FromSeconds(10))
+                    //         {
+                    //             deadClients.Add(client);
+                    //         }
+                    //     }
+                    //     foreach (var dc in deadClients)
+                    //     {
+                    //         dc.Socket.Dispose();
+                    //         _clients.Remove(dc);
+                    //     }
+                    // }
 
-                    await Task.Delay(500);
+                    // await Task.Delay(500);
                 }
             });
         }
