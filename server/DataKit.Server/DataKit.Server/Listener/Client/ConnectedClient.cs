@@ -19,5 +19,8 @@ namespace DataKit.Server.Listener.Client
 
         [JsonProperty("id")]
         public string Uid { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }

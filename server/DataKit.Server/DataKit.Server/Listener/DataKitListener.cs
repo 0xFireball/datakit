@@ -42,20 +42,32 @@ namespace DataKit.Server.Listener
 
         private async Task BeginRegistration(TcpClient client)
         {
-            var _clientWriter = new StreamWriter(client.GetStream());
-            var _clientReader = new StreamReader(client.GetStream());
-
-            var hello = await _clientReader.ReadLineAsync();
-            // TODO: parse hello
-            // send ack
-            var clientGuid = Guid.NewGuid().ToString("N");
-            await _clientWriter.WriteLineAsync($"ACK|{clientGuid}");
-            await _clientWriter.FlushAsync();
-            // Register the client
-            _clients.Add(new ConnectedClient(_clientReader, _clientWriter)
+            try
             {
-                Uid = clientGuid
-            });
+                var _clientWriter = new StreamWriter(client.GetStream());
+                var _clientReader = new StreamReader(client.GetStream());
+
+                var hello = await _clientReader.ReadLineAsync();
+                // parse hello
+                var helloParts = hello.Split('|');
+                if (helloParts.Length != 3) throw new ArgumentException($"Client hello only contained {helloParts.Length} segments.");
+                var clientName = helloParts[1];
+                // send ack
+                var clientGuid = Guid.NewGuid().ToString("N");
+                await _clientWriter.WriteLineAsync($"ACK|{clientGuid}");
+                await _clientWriter.FlushAsync();
+                // Register the client
+                _clients.Add(new ConnectedClient(_clientReader, _clientWriter)
+                {
+                    Name = clientName,
+                    Uid = clientGuid
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"client registration error: {e}");
+                throw;
+            }
         }
 
         public string CreateListenerChannel(string deviceId)
