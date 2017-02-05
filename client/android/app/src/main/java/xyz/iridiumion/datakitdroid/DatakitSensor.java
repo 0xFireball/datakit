@@ -114,7 +114,7 @@ public class DatakitSensor implements SensorEventListener {
             break;
             case Sensor.TYPE_AMBIENT_TEMPERATURE: {
                 float temp = values[0];
-                socketOut.println(createPacket("temp", timestamp, temp);
+                socketOut.println(createPacket("temp", timestamp, temp));
 //                Log.d("datakit", "temperature = "+temp);
             }
             break;
