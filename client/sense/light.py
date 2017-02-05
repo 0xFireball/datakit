@@ -9,6 +9,7 @@
 # GPIO   : RPi.GPIO v3.1.0a
 
 import RPi.GPIO as GPIO, time
+from connect.sensor import Sensor
 
 # Tell the GPIO library to use
 # Broadcom GPIO references
@@ -30,9 +31,11 @@ def RCtime (PiPin):
  	return measurement
 
 # Main program loop
-while True:
-	print RCtime(23) # Measure timing using GPIO23
+# while True:
+	# print RCtime(23) # Measure timing using GPIO23
 
 # MAIN FUNCTION
 def getLight(): 
 	return RCtime(23)
+
+Sensor("Light", "", getLight)

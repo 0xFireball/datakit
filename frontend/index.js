@@ -26,6 +26,7 @@ var dk = {
                 configToSave[inp.name] = inp.value;
             }
             window.localStorage.dk = JSON.stringify(configToSave);
+            $(".message").removeClass("hidden"); 
         },
         getURL: function() {
             return "http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port;
@@ -108,13 +109,13 @@ var onStart = function (conf) {
     var page = window.location.pathname.split("/").pop();
     page = page.slice(0, page.length - 5);
     dk.pages.global();
-    /*try {
+    try {
         dk.pages[page]();
     } catch (err) {
         console.error(err);
         console.warn("The '" + page + "' function may not have been defined in the dk page list");
-    }*/
-    dk.pages[page]();
+    }
+    //dk.pages[page]();
 };
 
 onStart();
