@@ -21,9 +21,11 @@ Format:
 
 Each of these sections, separated by a `|` character;
 
-1) `$H` - a basic hello packet identifier
-1) a name (alphanumeric string)
-1) a data collection type (see data collection types - NOTE: for now just use `stream`)
+1. `$H` - a basic hello packet identifier
+1. a name (alphanumeric string)
+1. units
+1. data type (we don't know why yet but it will probably be useful)
+1. a data collection type (see data collection types - NOTE: for now just use `stream`)
 
 Example:
 
@@ -37,8 +39,8 @@ The server receives the hello and tells the client: OK, i know you're here! you'
 
 Format:
 
-1) `ACK`
-1) A UID (alphanumeric string)
+1. `ACK`
+1. A UID (alphanumeric string)
 
 Example:
 
@@ -82,9 +84,9 @@ while SENDING:
 
 Format:
 
-1) Header (metadata)
+1. Header (metadata)
   - Sequence ID (reset when START received)
-1) Data
+1. Data
 
 Example:
 

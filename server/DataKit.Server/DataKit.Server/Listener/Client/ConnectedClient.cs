@@ -22,5 +22,11 @@ namespace DataKit.Server.Listener.Client
 
         [JsonProperty("name")]
         public string Name { get; set; }
+
+        [JsonProperty("units")]
+        public string Units { get; set; }
+
+        [JsonProperty("dataType")]
+        public string DataType { get; set; }
     }
 }

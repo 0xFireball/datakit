@@ -50,8 +50,10 @@ namespace DataKit.Server.Listener
                 var hello = await _clientReader.ReadLineAsync();
                 // parse hello
                 var helloParts = hello.Split('|');
-                if (helloParts.Length != 3) throw new ArgumentException($"Client hello only contained {helloParts.Length} segments.");
+                if (helloParts.Length != 5) throw new ArgumentException($"Client hello only contained {helloParts.Length} segments.");
                 var clientName = helloParts[1];
+                var units = helloParts[2];
+                var dataType = helloParts[3];
                 // send ack
                 var clientGuid = Guid.NewGuid().ToString("N");
                 await _clientWriter.WriteLineAsync($"ACK|{clientGuid}");
@@ -60,6 +62,8 @@ namespace DataKit.Server.Listener
                 _clients.Add(new ConnectedClient(_clientReader, _clientWriter)
                 {
                     Name = clientName,
+                    Units = units,
+                    DataType = dataType
                     Uid = clientGuid
                 });
             }
