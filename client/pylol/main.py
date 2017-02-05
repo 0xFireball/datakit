@@ -18,7 +18,7 @@ def getpacket(transport):
 
 
 # send hello
-sock.sendall('$H|lolpy fake sensor|stream'.encode())
+result = sock.sendall('$H|lolpy fake sensor|stream\n'.encode())
 ack = getpacket(sock)
 print(ack)
 
