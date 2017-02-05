@@ -36,7 +36,7 @@ namespace DataKit.Server.Listener.Logger
                         }
                     }
                 }
-                else if (data == "$P")
+                else if (data == "$P\n")
                 {
                     _client.LastHeartbeat = DateTime.Now;
                 }
