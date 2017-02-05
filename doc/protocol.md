@@ -10,7 +10,8 @@ connection is over tcp, language agnostic protocol
 ### Connection setup
 
 Connection setup consists of two parts: a HELLO packet and an ACK packet.
-The client sends the server a HELLO, and the server will respond with an ACK indicating that the connection is now valid.
+The client sends the server a HELLO, and the server will respond with an ACK
+indicating that the connection is now valid.
 All data is followed by a UNIX NEWLINE! (`\n`)
 
 #### The HELLO packet
