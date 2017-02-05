@@ -47,8 +47,9 @@ var dk = {
         },
         data: function() {
             //Check if devices
-            if(getQueryParams("devices") == null) window.location.href = "devices.html"
-            var deviceList = getQueryParams("devices").indexOf(",") > -1 ? getQueryParams("devices").split(",") : getQueryParams("devices");
+            //if(getQueryParams("devices") == null) window.location.href = "devices.html";
+            var deviceList = getQueryParams("devices").split(",");
+            console.log(deviceList);
             $.each(deviceList, function(val) {
                 var did = deviceList[val];
                 $.post(dk.utils.getURL() + "/r/createchannel/" + did, function(channelID) {
@@ -56,9 +57,9 @@ var dk = {
                         did: deviceList[val],
                         channel: channelID
                     };
+                    $.post(dk.utils.getURL() + "/r/channel/" + channelID + "/start/");
                     newObj.ws = new WebSocket("ws" + dk.utils.getURL().substring(4) + "/ws");
                     newObj.ws.onopen = function() {
-                        console.log("Opening: " + newObj.channel);
                         newObj.ws.send(">" + newObj.channel + "\n");
                     };
                     newObj.ws.onmessage = function(evt) {
@@ -99,29 +100,13 @@ var configLoaded = function (conf) {
     var page = window.location.pathname.split("/").pop();
     page = page.slice(0, page.length - 5);
     dk.pages.global();
-    try {
+    /*try {
         dk.pages[page]();
     } catch (err) {
         console.error(err);
         console.warn("The '" + page + "' function may not have been defined in the dk page list");
-    }
-};
-
-var ws = new WebSocket("ws://localhost:5000/ws");
-
-ws.onopen = function() {
-    // Web Socket is connected, send data using send()
-    console.log("sending");
-    ws.send(">1f45df1250ca41f8a08eb6e9f71bda90c\n");
-};
-
-ws.onmessage = function(evt) {
-    var received_msg = evt.data;
-    console.log(received_msg);
-};
-
-ws.onclose = function() {
-    // websocket is closed.
+    }*/
+    dk.pages[page]();
 };
 
 $.get("config.json", configLoaded);
