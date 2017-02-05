@@ -1,5 +1,5 @@
 var config = null;
-
+var colorArray = ["#c0392b", "#e67e22", "#f1c40f", "#34495e", "#9b59b6", "#3498db", "#2ecc71", "#1abc9c"];
 var getQueryParams = function (name, url) {
     if (!url) {
         url = window.location.href;
@@ -50,10 +50,10 @@ var dk = {
 
 
             //Check if devices
-            if(getQueryParams("devices") === null) window.location.href = "devices.html";
+            //if(getQueryParams("devices") === null) window.location.href = "devices.html";
 
             //Assemble Chart
-
+            dk.pageFunctions.data.init();
 
             var deviceList = getQueryParams("devices").split(",");
             var deviceName = getQueryParams("names").split(",");
@@ -72,9 +72,21 @@ var dk = {
                         newObj.ws.send(">" + newObj.channel + "\n");
                     };
                     newObj.ws.onmessage = function(evt) {
-                        evt.data.device_name = newObj.name;
-                        console.log("howdy" +  newObj.name);
-                        console.log(evt.data);
+                        evt.data = JSON.parse(evt.data);
+                        evt.data = JSON.parse(evt.data)
+                        realData = JSON.parse(evt.data);
+                        //evt.data.device_name = newObj.name;
+                        //console.log(evt.data["timestamp"]);
+                        if(dk.pageFunctions.data.dataNames.indexOf(newObj.name) <= -1) dk.pageFunctions.data.dataNames.push(newObj.name);
+                        var datasetIdx = dk.pageFunctions.data.dataNames.indexOf(newObj.name);
+                        var targSet = dk.pageFunctions.data.data.datasets[datasetIdx].data;
+                        dk.pageFunctions.data.data.datasets[datasetIdx].label = newObj.name;
+                        if(targSet.firstMark === undefined) targSet.firstMark = realData["timestamp"]
+                        targSet.push({x: realData["timestamp"] - targSet.firstMark, y: realData["data"]});
+                        if(targSet.length > dk.pageFunctions.data.config.maxPoints) delete targSet.shift();
+                        setTimeout(dk.pageFunctions.data.update, 100);
+
+
                         //insertDataIntoChart(evt.data)
                     };
                     dk.pageFunctions.data.deviceConnections.push(newObj);
@@ -104,9 +116,54 @@ var dk = {
         },
         data: {
             deviceConnections: [],
+            dataNames: [],
+            config: {
+                maxPoints: 20,
+                scale: 100
+            },
             chart: null,
+            colorArray: ["#c0392b", "#e67e22", "#f1c40f", "#34495e", "#9b59b6", "#3498db", "#2ecc71", "#1abc9c"],
             init: function() {
-                
+                dk.pageFunctions.data.chart = new Chart(document.getElementById("myLineChart"), {
+                    type: 'line',
+                    data: dk.pageFunctions.data.data,
+                    options: dk.pageFunctions.data.options
+                });
+            },
+            update: function() {
+                dk.pageFunctions.data.chart = new Chart(document.getElementById("myLineChart"), {
+                    type: 'line',
+                    data: dk.pageFunctions.data.data,
+                    options: dk.pageFunctions.data.options
+                });
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "right"
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                },
+                animation: false
+            },
+            data:{
+                datasets: [{
+                    label: "",
+                    fill: false,
+                    borderColor: colorArray[0],
+                    data: [
+                    ]
+                }, {
+                    label: "",
+                    fill: false,
+                    borderColor: colorArray[5],
+                    data: [
+                    ]
+                }]
             }
         }
     }

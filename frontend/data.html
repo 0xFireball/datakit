@@ -14,7 +14,6 @@
 			<div class="ui segment sixteen wide column">
 				<h1>Collect Data</h1>
 				<div class="ui stackable five column grid">
-
 					<!--Selectors and modifiers.-->
 					<div class="ui  five wide column">
 						<div class="ui labeled fluid input" >
@@ -26,22 +25,15 @@
 						<br />
 						<div class="ui labeled fluid input">
 						  <div class="ui label">
-						    Temp Scale
+						    Scale
 						  </div>
 						  <input type="text" placeholder="10">
-						</div>
-						<br />
-						<div class="ui labeled fluid input" >
-						  <div class="ui label">
-						    Light Scale
-						  </div>
-						  <input type="text" placeholder="1000">
 						</div>
 					</div>
 
 					<!--The Actual Chart.-->
 				  <div class="ui  eleven wide column">
-						<canvas id="myLineChart" width="100%" height="100%"></canvas>
+						<canvas id="myLineChart" width="100%" height="60%"></canvas>
 					</div>
 				</div>
 			</div>
@@ -51,9 +43,10 @@
 
 	<script src="./index.js"></script>
     <script>
-
+/*
     x = 0;
     maxPoints = 20
+    var colorArray = ["#c0392b", "#e67e22", "#f1c40f", "#34495e", "#9b59b6", "#3498db", "#2ecc71", "#1abc9c"];
 
     var options = {
         title: {
@@ -78,16 +71,24 @@
     }
     var data = {
         datasets: [{
-            label: "Sample Dataset 1",
+            label: "Temp Data",
             fill: false,
+            borderColor: colorArray[0],
             data: [
             ]
         }, {
-            label: "Sample Dataset 2",
+            label: "Light Data",
             fill: false,
+            borderColor: colorArray[5],
             data: [
             ]
         }]
+    }
+
+    var assignColors = function() {
+        for (var i = 0; i < data.datasets.length; i++) {
+            data.datasets.borderColor = colorArray[i];
+        }
     }
 
     var myLineChart = new Chart(document.getElementById("myLineChart"), {
@@ -111,7 +112,7 @@
             data: data,
             options: options
         });
-    }
+    }*/
 
     </script>
 </body>

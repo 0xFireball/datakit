@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-server_data = ('192.241.237.141', 5503)
+server_data = ('127.0.0.1', 5503)
 
 
 class Sensor(object):
