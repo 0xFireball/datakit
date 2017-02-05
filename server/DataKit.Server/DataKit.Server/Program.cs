@@ -41,7 +41,7 @@ namespace DataKit.Server
             }
             var listener = new DataKitListener(new TcpListener(IPAddress.Any, port));
             DataKitRegistry.Listener = listener;
-                // Start the listener on the async threadpool
+                // Start the listener on the async threa    dpool
             listener.RunAsync();
         }
     }

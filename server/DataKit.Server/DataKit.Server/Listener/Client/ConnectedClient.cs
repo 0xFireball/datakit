@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+using DataKit.Server.Utilities;
 using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
@@ -11,10 +15,48 @@ namespace DataKit.Server.Listener.Client
         [JsonIgnore]
         public StreamWriter Output { get; }
 
-        public ConnectedClient(StreamReader inputStream, StreamWriter outputStream)
+        [JsonIgnore]
+        public TcpClient Socket { get; }
+
+        [JsonIgnore]
+        public Pipelines<string, bool> ReceivePipeline { get; } = new Pipelines<string, bool>();
+
+        public ConnectedClient(StreamReader inputStream, StreamWriter outputStream, TcpClient sock)
         {
             Input = inputStream;
             Output = outputStream;
+            Socket = sock;
+            RegisterPipelineHooks();
+            StartEventLoop();
+        }
+
+        private void RegisterPipelineHooks()
+        {
+            ReceivePipeline.AddItemToStart(async (data) =>
+            {
+                if (data == "$P")
+                {
+                    LastHeartbeat = DateTime.Now;
+                }
+                return false;
+            });
+        }
+
+        private async Task StartEventLoop()
+        {
+            await Task.Run(async () =>
+            {
+                while (true)
+                {
+                    var data = await Input.ReadLineAsync();
+                    data = data.Trim();
+                    // Call pipelines
+                    foreach (var handler in ReceivePipeline.GetHandlers())
+                    {
+                        await handler.Invoke(data);
+                    }
+                }
+            });
         }
 
         [JsonProperty("id")]
@@ -28,5 +70,8 @@ namespace DataKit.Server.Listener.Client
 
         [JsonProperty("dataType")]
         public string DataType { get; set; }
+
+        [JsonProperty("lastHeartbeat")]
+        public DateTime LastHeartbeat { get; set; }
     }
 }

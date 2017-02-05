@@ -1,3 +1,7 @@
 from connect import sensor
 
-sensor.Sensor("test", "test", "test")
+def testing():
+    return "lol"
+
+# name, unit, function
+sensor.Sensor("test", "test", testing)
