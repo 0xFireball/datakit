@@ -46,12 +46,13 @@ GET `/channel/{id}/getdata`
 Receives all the data currently on the channel. This is an array
 of JSON objects, in the form:
 
-```json
+```js
 [
     {
         "tag": "some_tag",
         "timestamp": 1459309227,
         "data": 3.141593
-    }
+    },
+    // ... etc ...
 ]
 ```

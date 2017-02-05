@@ -1,7 +1,7 @@
 from connect.sensor import Sensor
 
 def testing():
-    return "lol"
+    return 6969
 
 # name, unit, function
 Sensor("name", "units", testing)
