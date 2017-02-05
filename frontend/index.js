@@ -16,7 +16,8 @@ var getQueryParams = function (name, url) {
 var dk = {
     utils: {
         initStorage: function () {
-            window.localStorage.dk = window.localStorage.dk === undefined ? {} : window.localStorage.dk;
+            console.log("init");
+            window.localStorage.dk = window.localStorage.dk === undefined ? JSON.stringify({}) : window.localStorage.dk;
         },
         saveConfig: function () {
             var inputs = $("input");
@@ -33,8 +34,8 @@ var dk = {
     },
     pages: {
         global: function () {
-            config = JSON.parse(window.localStorage.dk);
             dk.utils.initStorage();
+            config = JSON.parse(window.localStorage.dk);
             $("dkheader").replaceWith('<div class="ui top fixed menu" style="position: static !important;"><a class="item" href="index.html"><strong>Data</strong>Kit</a><a class="item" href="devices.html">Devices</a><a class="item" href="config.html">Configure</a></div>');
         },
         devices: function () {
