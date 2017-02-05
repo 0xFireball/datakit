@@ -27,14 +27,18 @@ namespace DataKit.Server.Listener.Logger
             });
         }
 
-        public void StartCollection()
+        public async Task StartCollection()
         {
             _collecting = true;
+            await _client.Output.WriteLineAsync("START");
+            await _client.Output.FlushAsync();
         }
 
-        public void StopCollection()
+        public async Task StopCollection()
         {
             _collecting = false;
+            await _client.Output.WriteLineAsync("STOP");
+            await _client.Output.FlushAsync();
         }
     }
 }
