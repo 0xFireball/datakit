@@ -46,7 +46,7 @@ class Sensor(object):
     def read_data(self):
         self.go = True
         while self.go:
-            print(str(self.get_data()))
+            self.sock.sendall(str(self.get_data()+'\n').endcode())
             time.sleep(.1)
 
     # Heartbeater
