@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-server_data = ('127.0.0.1', 5503)
+server_data = ('192.241.237.141', 5503)
 
 
 class Sensor(object):
@@ -39,18 +39,20 @@ class Sensor(object):
             print(data)
             if data == "START":
                 self.go = True
-                self.follower.start()
-            if data == "STOP":
+                if not self.follower.isAlive():
+                    self.follower.start()
+            elif data == "STOP":
                 print("Got STOP")
                 self.go = False
 
     # Reads and sends data
     def read_data(self):
         self.go = True
-        while self.go:
-            data = ('>|%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
-            self.sock.sendall(data.encode())
-            print(data)
+        while True:
+            if self.go:
+                data = ('>|%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
+                self.sock.sendall(data.encode())
+                print(data)
             time.sleep(.1)
 
     # Heartbeater
