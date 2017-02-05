@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ipText = (EditText)findViewById(R.id.ipText);
-        connectBtn = (Button)findViewById(R.id.connectBtn);
+        ipText = (EditText) findViewById(R.id.ipText);
+        connectBtn = (Button) findViewById(R.id.connectBtn);
 
         connectBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // init SensorManager
-        DatakitSensor.sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        DatakitSensor.sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     }
 
     protected void setCompText(final TextView view, final String text) {
@@ -64,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
     protected void registerSensor(int type) {
         registerSensor(type, SensorManager.SENSOR_DELAY_GAME);
     }
+
     protected void registerSensor(int type, int delay) {
         Sensor sensor = DatakitSensor.sensorManager.getDefaultSensor(type);
         if (sensor == null) {
-            Log.d("datakit", "Sensor for type "+type+" is null");
+            Log.d("datakit", "Sensor for type " + type + " is null");
         } else {
             sensors.add(new DatakitSensor(sensor, ipText.getText().toString()));
         }
