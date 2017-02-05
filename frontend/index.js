@@ -16,7 +16,6 @@ var getQueryParams = function (name, url) {
 var dk = {
     utils: {
         initStorage: function () {
-            console.log("init");
             window.localStorage.dk = window.localStorage.dk === undefined ? JSON.stringify({}) : window.localStorage.dk;
         },
         saveConfig: function () {
@@ -50,13 +49,15 @@ var dk = {
             //Check if devices
             //if(getQueryParams("devices") == null) window.location.href = "devices.html";
             var deviceList = getQueryParams("devices").split(",");
+            var deviceName = getQueryParams("names").split(",");
             console.log(deviceList);
             $.each(deviceList, function(val) {
                 var did = deviceList[val];
                 $.post(dk.utils.getURL() + "/r/createchannel/" + did, function(channelID) {
                     var newObj = {
                         did: deviceList[val],
-                        channel: channelID
+                        channel: channelID,
+                        name: deviceName[val]
                     };
                     $.post(dk.utils.getURL() + "/r/channel/" + channelID + "/start/");
                     newObj.ws = new WebSocket("ws" + dk.utils.getURL().substring(4) + "/ws");
@@ -64,8 +65,10 @@ var dk = {
                         newObj.ws.send(">" + newObj.channel + "\n");
                     };
                     newObj.ws.onmessage = function(evt) {
-                        console.log(newObj.channel);
+                        evt.data.device_name = newObj.name;
+                        console.log("howdy" +  newObj.name);
                         console.log(evt.data);
+                        //insertDataIntoChart(evt.data)
                     };
                     dk.pageFunctions.data.deviceConnections.push(newObj);
                 });
@@ -79,14 +82,17 @@ var dk = {
             },
             loadDevices: function () {
                 var deviceList = [];
+                var deviceName = [];
                 $.each($(".checkbox"), function (device) {
                     device = $($(".checkbox")[device]);
                     if (device.checkbox('is checked')) {
                         deviceList.push(device.children().first().attr('name'));
+                        deviceName.push(device.children().first().attr('device_name'));
                     }
                 });
                 var url = deviceList.join(',');
-                window.location.href = "data.html?devices=" + url;
+                var url2 = deviceName.join(',');
+                window.location.href = "data.html?devices=" + url + "&names=" + url2;
             }
         },
         data: {
