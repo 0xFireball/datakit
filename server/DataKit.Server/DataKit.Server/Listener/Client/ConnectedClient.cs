@@ -38,6 +38,7 @@ namespace DataKit.Server.Listener.Client
                 {
                     LastHeartbeat = DateTime.Now;
                 }
+                return false;
             });
         }
 
@@ -45,12 +46,15 @@ namespace DataKit.Server.Listener.Client
         {
             await Task.Run(async () =>
             {
-                var data = await Input.ReadLineAsync();
-                data = data.Trim();
-                // Call pipelines
-                foreach (var handler in ReceivePipeline.GetHandlers())
+                while (true)
                 {
-                    await handler.Invoke(data);
+                    var data = await Input.ReadLineAsync();
+                    data = data.Trim();
+                    // Call pipelines
+                    foreach (var handler in ReceivePipeline.GetHandlers())
+                    {
+                        await handler.Invoke(data);
+                    }
                 }
             });
         }
