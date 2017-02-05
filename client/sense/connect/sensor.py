@@ -48,14 +48,16 @@ class Sensor(object):
     def read_data(self):
         self.go = True
         while self.go:
-            self.sock.sendall((str(">"+self.get_data())+'\n').encode())
-            print((str(self.get_data())+'\n'))
+            data = ('>%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
+            self.sock.sendall(data.encode())
+            print(data)
             time.sleep(1)
 
     # Heartbeater
     def heartbeat(self):
         while True:
             self.sock.sendall('$P\n'.encode())
+            print("beep bop")
             time.sleep(1)
 
     # Helper function to get data from web sockets

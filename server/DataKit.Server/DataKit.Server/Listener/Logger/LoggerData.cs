@@ -15,7 +15,7 @@ namespace DataKit.Server.Listener.Logger
         public long Timestamp { get; }
         public LoggerData(string rawData)        
         {
-            var rawDataParts = rawData.Split(' ');
+            var rawDataParts = rawData.Split('|');
             var tag = rawDataParts[1];
             var rawTimestamp = rawDataParts[2];
             var rawDataFloat = rawDataParts[3];
