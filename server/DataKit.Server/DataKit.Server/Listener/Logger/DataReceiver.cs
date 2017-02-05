@@ -11,31 +11,31 @@ namespace DataKit.Server.Listener.Logger
         public DataChannel Channel { get; } = new DataChannel();
         private bool _collecting = false;
 
-        public Pipelines<string, bool> ReceivePipeline { get; } = new Pipelines<string, bool>();
+        public Pipelines<string, bool> DataPipeline { get; } = new Pipelines<string, bool>();
 
         public DataReceiver(ConnectedClient client)
         {
             _client = client;
-            StartEventLoop();
+            RegisterIntoPipeline();
         }
 
-        private async Task StartEventLoop()
+        private async Task RegisterIntoPipeline()
         {
-            await Task.Run(async () =>
+            _client.ReceivePipeline.AddItemToStart(async (data) =>
             {
-                var data = await _client.Input.ReadLineAsync();
                 if (data.StartsWith(">", StringComparison.Ordinal))
                 {
                     if (_collecting)
                     {
                         Channel.Data.Add(data);
                         // Call pipelines
-                        foreach (var handler in ReceivePipeline.GetHandlers())
+                        foreach (var handler in DataPipeline.GetHandlers())
                         {
                             await handler.Invoke(data);
                         }
                     }
                 }
+                return false;
             });
         }
 

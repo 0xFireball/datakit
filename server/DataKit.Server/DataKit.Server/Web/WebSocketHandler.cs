@@ -44,7 +44,7 @@ namespace DataKit.Server.Web
                     var chId = data.Substring(1);
                     var receivers = DataKitRegistry.Listener.EnumerateReceivers();
                     var channel = receivers.FirstOrDefault(x => x.Channel.Identifier == chId);
-                    channel.ReceivePipeline.AddItemToStart(async (recvdata) => {
+                    channel.DataPipeline.AddItemToStart(async (recvdata) => {
                         await _ws.SendAsync(
                             new ArraySegment<byte>(System.Text.Encoding.UTF8.GetBytes(recvdata)),
                             WebSocketMessageType.Text,

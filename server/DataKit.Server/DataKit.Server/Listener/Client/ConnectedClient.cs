@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using DataKit.Server.Utilities;
 using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
@@ -17,12 +18,27 @@ namespace DataKit.Server.Listener.Client
         [JsonIgnore]
         public TcpClient Socket { get; }
 
+        [JsonIgnore]
+        public Pipelines<string, bool> ReceivePipeline { get; } = new Pipelines<string, bool>();
+
         public ConnectedClient(StreamReader inputStream, StreamWriter outputStream, TcpClient sock)
         {
             Input = inputStream;
             Output = outputStream;
             Socket = sock;
+            RegisterPipelineHooks();
             StartEventLoop();
+        }
+
+        private void RegisterPipelineHooks()
+        {
+            ReceivePipeline.AddItemToStart(async (data) =>
+            {
+                if (data == "$P")
+                {
+                    LastHeartbeat = DateTime.Now;
+                }
+            });
         }
 
         private async Task StartEventLoop()
@@ -30,9 +46,11 @@ namespace DataKit.Server.Listener.Client
             await Task.Run(async () =>
             {
                 var data = await Input.ReadLineAsync();
-                if (data == "$P\n")
+                data = data.Trim();
+                // Call pipelines
+                foreach (var handler in ReceivePipeline.GetHandlers())
                 {
-                    LastHeartbeat = DateTime.Now;
+                    await handler.Invoke(data);
                 }
             });
         }
