@@ -3,6 +3,8 @@
 
 The server exposes a REST API to allow it to be controlled remotely
 
+All routes are relative to `server_address` with the `/r` prefix
+
 ## REST routes
 
 ### Connected devices

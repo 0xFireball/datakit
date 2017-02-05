@@ -13,8 +13,8 @@ namespace DataKit.Server.Listener
     public class DataKitListener
     {
         private readonly TcpListener _hostSocket;
-        private readonly List<ConnectedClient> _clients;
-        private List<DataReceiver> _receivers;
+        private readonly List<ConnectedClient> _clients = new List<ConnectedClient>();
+        private List<DataReceiver> _receivers = new List<DataReceiver>();
 
 
         public DataKitListener(TcpListener hostSocket)
