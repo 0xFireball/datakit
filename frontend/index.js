@@ -57,7 +57,7 @@ var dk = {
 
 
             //Check if devices
-            //if(getQueryParams("devices") === null) window.location.href = "devices.html";
+            if(getQueryParams("devices") === null) window.location.href = "devices.html";
 
             //Assemble Chart
             dk.pageFunctions.data.init();
@@ -88,7 +88,7 @@ var dk = {
                         dk.pageFunctions.data.data.datasets[datasetIdx].label = newObj.name;
                         if(targSet.firstMark === undefined) targSet.firstMark = realData["timestamp"]
                         targSet.push({x: realData["timestamp"] - targSet.firstMark, y: realData["data"]});
-                        if(targSet.length > dk.pageFunctions.data.config.maxPoints) delete targSet.shift();
+                        while(targSet.length >= dk.pageFunctions.data.config.maxPoints) delete targSet.shift();
                         setTimeout(dk.pageFunctions.data.update, 100);
 
 
