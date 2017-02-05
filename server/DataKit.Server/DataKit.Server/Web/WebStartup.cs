@@ -10,13 +10,12 @@ namespace DataKit.Server.Web
     {
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
+        {            
+            app.Map("/ws", WebSocketHandler.Map);
             app.UseOwin(x => x.UseNancy(options => options.PassThroughWhenStatusCodesAre(
                 HttpStatusCode.NotFound,
                 HttpStatusCode.InternalServerError
             )));
-            app.UseWebSockets();
-            app.Use(WebSocketHandler.AcceptWebSocketClients);
         }
     }
 }
