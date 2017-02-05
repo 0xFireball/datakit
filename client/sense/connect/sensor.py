@@ -2,12 +2,12 @@ import socket
 import threading
 import time
 
-server_data = ('127.0.0.1', 5503)
+server_data = ('192.241.237.141', 5503)
 
 
 class Sensor(object):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(server_data)
+    result = sock.connect(server_data)
     leader = None
     follower = None
     heartbeater = None
@@ -51,7 +51,7 @@ class Sensor(object):
             data = ('>|%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
             self.sock.sendall(data.encode())
             print(data)
-            time.sleep(.11)
+            time.sleep(.1)
 
     # Heartbeater
     def heartbeat(self):

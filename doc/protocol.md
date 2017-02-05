@@ -44,7 +44,7 @@ Format:
 
 Example:
 
-`ACK` + NEWLINE
+`ACK|asdjfalskdjfajsrhuip3wtr87q23tg` + NEWLINE
 
 ### Standby stage
 
