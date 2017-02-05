@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Sockets;
 using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
@@ -12,10 +13,14 @@ namespace DataKit.Server.Listener.Client
         [JsonIgnore]
         public StreamWriter Output { get; }
 
-        public ConnectedClient(StreamReader inputStream, StreamWriter outputStream)
+        [JsonIgnore]
+        public TcpClient Socket { get; }
+
+        public ConnectedClient(StreamReader inputStream, StreamWriter outputStream, TcpClient sock)
         {
             Input = inputStream;
             Output = outputStream;
+            Socket = sock;
         }
 
         [JsonProperty("id")]

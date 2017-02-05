@@ -28,6 +28,11 @@ namespace DataKit.Server.Listener
             return _clients;
         }
 
+        public IEnumerable<DataReceiver> EnumerateReceivers()
+        {
+            return _receivers;
+        }
+
         /// <summary>
         /// Necessary event loop
         /// </summary>
@@ -50,6 +55,7 @@ namespace DataKit.Server.Listener
                         }
                         foreach (var dc in deadClients)
                         {
+                            dc.Socket.Dispose();
                             _clients.Remove(dc);
                         }
                     }
@@ -92,7 +98,7 @@ namespace DataKit.Server.Listener
                 await _clientWriter.WriteLineAsync($"ACK|{clientGuid}");
                 await _clientWriter.FlushAsync();
                 // Register the client
-                _clients.Add(new ConnectedClient(_clientReader, _clientWriter)
+                _clients.Add(new ConnectedClient(_clientReader, _clientWriter, client)
                 {
                     Name = clientName,
                     Units = units,

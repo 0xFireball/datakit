@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DataKit.Server.Listener.Client;
+using DataKit.Server.Utilities;
 
 namespace DataKit.Server.Listener.Logger
 {
@@ -9,6 +10,8 @@ namespace DataKit.Server.Listener.Logger
         private readonly ConnectedClient _client;
         public DataChannel Channel { get; } = new DataChannel();
         private bool _collecting = false;
+
+        public Pipelines<string, bool> ReceivePipeline { get; } = new Pipelines<string, bool>();
 
         public DataReceiver(ConnectedClient client)
         {
@@ -26,6 +29,11 @@ namespace DataKit.Server.Listener.Logger
                     if (_collecting)
                     {
                         Channel.Data.Add(data);
+                        // Call pipelines
+                        foreach (var handler in ReceivePipeline.GetHandlers())
+                        {
+                            await handler.Invoke(data);
+                        }
                     }
                 }
                 else if (data == "$P")

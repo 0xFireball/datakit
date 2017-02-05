@@ -7,6 +7,8 @@ using System.Net.WebSockets;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Linq;
 
 namespace DataKit.Server.Web
 {
@@ -18,11 +20,32 @@ namespace DataKit.Server.Web
             _ws = websocket;
         }
 
+        private async Task<string> ReadLine()
+        {
+            var data = string.Empty;
+            while (true)
+            {
+                var buf = new byte[1];
+                var arraySeg = new ArraySegment<byte>(buf);
+                await _ws.ReceiveAsync(arraySeg, CancellationToken.None);
+                var c = (char)buf[0];
+                if (c == '\n') return data;
+                data += c;
+            }
+        }
+
         public async Task EventLoop()
         {
             while (_ws.State == WebSocketState.Open)
             {
-
+                var data = await ReadLine();
+                if (data.StartsWith(">", StringComparison.Ordinal))
+                {
+                    var chId = data.Substring(1);
+                    var receivers = DataKitRegistry.Listener.EnumerateReceivers();
+                    var channel = receivers.FirstOrDefault(x => x.Channel.Identifier == chId);
+                    // channel.ReceivePipeline.AddItemToStart()
+                }
             }
         }
 
