@@ -92,7 +92,7 @@ while SENDING:
 
 Format:
 
-1. Lol (`>` character)
+1. `>` character
 1. _the following, delimited by_ `|` _chars:_
    1. Tag (string)
    1. UNIX timestamp
