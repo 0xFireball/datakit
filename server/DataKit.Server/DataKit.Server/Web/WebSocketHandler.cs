@@ -9,6 +9,7 @@ using System;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace DataKit.Server.Web
 {
@@ -44,9 +45,9 @@ namespace DataKit.Server.Web
                     var chId = data.Substring(1);
                     var receivers = DataKitRegistry.Listener.EnumerateReceivers();
                     var channel = receivers.FirstOrDefault(x => x.Channel.Identifier == chId);
-                    channel.DataPipeline.AddItemToStart(async (recvdata) => {
+                    channel.DataPipeline.AddItemToStart(async (recvDataPacket) => {
                         await _ws.SendAsync(
-                            new ArraySegment<byte>(System.Text.Encoding.UTF8.GetBytes(recvdata)),
+                            new ArraySegment<byte>(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(recvDataPacket))),
                             WebSocketMessageType.Text,
                             false,
                             CancellationToken.None

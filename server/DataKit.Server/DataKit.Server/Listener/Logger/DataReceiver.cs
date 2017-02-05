@@ -11,7 +11,7 @@ namespace DataKit.Server.Listener.Logger
         public DataChannel Channel { get; } = new DataChannel();
         private bool _collecting = false;
 
-        public Pipelines<string, bool> DataPipeline { get; } = new Pipelines<string, bool>();
+        public Pipelines<LoggerData, bool> DataPipeline { get; } = new Pipelines<LoggerData, bool>();
 
         public DataReceiver(ConnectedClient client)
         {
@@ -27,11 +27,12 @@ namespace DataKit.Server.Listener.Logger
                 {
                     if (_collecting)
                     {
-                        Channel.Data.Add(data);
-                        // Call pipelines
+                        var parsedData = new LoggerData(data);
+                        Channel.Data.Add(parsedData);
+                        // Call data pipelines
                         foreach (var handler in DataPipeline.GetHandlers())
                         {
-                            await handler.Invoke(data);
+                            await handler.Invoke(parsedData);
                         }
                     }
                 }
