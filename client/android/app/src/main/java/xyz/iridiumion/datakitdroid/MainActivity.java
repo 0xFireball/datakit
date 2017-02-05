@@ -5,77 +5,73 @@ import android.hardware.*;
 import android.os.*;
 import android.support.v7.app.*;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-    private SensorManager sensorManager;
-//    private Sensor senAmbientLight, senAccelerometer;
+public class MainActivity extends AppCompatActivity {
+
+    private EditText ipText;
+    private Button connectBtn;
+
+    private ArrayList<DatakitSensor> sensors = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ipText = (EditText)findViewById(R.id.ipText);
+        connectBtn = (Button)findViewById(R.id.connectBtn);
+
+        connectBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // init Sensor(s)
+                registerSensor(Sensor.TYPE_LIGHT);
+                registerSensor(Sensor.TYPE_ACCELEROMETER);
+                registerSensor(Sensor.TYPE_GYROSCOPE);
+                registerSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+                connectBtn.post(new Runnable() {
+                    public void run() {
+                        connectBtn.setText("Connecting");
+                        connectBtn.setEnabled(false);
+                    }
+                });
+            }
+        });
+
         // init SensorManager
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        // init Sensor(s)
-        registerSensor(Sensor.TYPE_LIGHT);
-        registerSensor(Sensor.TYPE_ACCELEROMETER);
-        registerSensor(Sensor.TYPE_GYROSCOPE);
-        registerSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        DatakitSensor.sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+    }
+
+    protected void setCompText(final TextView view, final String text) {
+        view.post(new Runnable() {
+            public void run() {
+                view.setText(text);
+            }
+        });
     }
 
     protected void registerSensor(int type) {
         registerSensor(type, SensorManager.SENSOR_DELAY_GAME);
     }
     protected void registerSensor(int type, int delay) {
-        Sensor sensor = sensorManager.getDefaultSensor(type);
+        Sensor sensor = DatakitSensor.sensorManager.getDefaultSensor(type);
         if (sensor == null) {
             Log.d("datakit", "Sensor for type "+type+" is null");
         } else {
-            sensorManager.registerListener(this, sensor, delay);
+            sensors.add(new DatakitSensor(sensor, ipText.getText().toString()));
         }
     }
 
-    private long lastSensorUpdate = System.currentTimeMillis();
-    private void updateTimestamp() {
-        long time = System.currentTimeMillis();
-        Log.d("datakit", "DELAY WAS "+(time-lastSensorUpdate)+" ms");
-        lastSensorUpdate = time;
-    }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        float[] values = event.values;
-        switch (event.sensor.getType()) {
-            case Sensor.TYPE_LIGHT:
-                float light = values[0];
-                Log.d("datakit", "light = "+light);
-                break;
-            case Sensor.TYPE_ACCELEROMETER:
-                float x = values[0];
-                float y = values[1];
-                float z = values[2];
-//                Log.d("datakit", "acceleration = ["+x+", "+y+", "+z+"]");
-                break;
-            case Sensor.TYPE_GYROSCOPE:
-                float a = values[0];
-                float b = values[1];
-                float c = values[2];
-//                Log.d("datakit", "gyro = ["+a+", "+b+", "+c+"]");
-                break;
-            case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                float temp = values[0];
-//                Log.d("datakit", "temperature = "+temp);
-                break;
-            default:
-                Log.d("datakit", "Got data from unregistered sensor");
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 }
