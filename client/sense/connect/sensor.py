@@ -2,12 +2,12 @@ import socket
 import threading
 import time
 
-server_data = ('127.0.0.1', 5503)
+server_data = ('192.241.237.141', 5503)
 
 
 class Sensor(object):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(server_data)
+    result = sock.connect(server_data)
     leader = None
     follower = None
     heartbeater = None
@@ -44,20 +44,19 @@ class Sensor(object):
                 print("Got STOP")
                 self.go = False
 
-    # Reads and sends data (TODO:SEND DATA)
+    # Reads and sends data
     def read_data(self):
         self.go = True
         while self.go:
             data = ('>|%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
             self.sock.sendall(data.encode())
             print(data)
-            time.sleep(1)
+            time.sleep(.1)
 
     # Heartbeater
     def heartbeat(self):
         while True:
             self.sock.sendall('$P\n'.encode())
-            print("beep bop")
             time.sleep(1)
 
     # Helper function to get data from web sockets

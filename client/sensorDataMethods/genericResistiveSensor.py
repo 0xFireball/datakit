@@ -34,5 +34,5 @@ while True:
 	print RCtime(23) # Measure timing using GPIO23
 
 # MAIN FUNCTION
-def getLight(): 
+def getValue(): 
 	return RCtime(23)

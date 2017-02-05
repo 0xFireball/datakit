@@ -41,13 +41,19 @@ namespace DataKit.Server.Utilities
 
         public IEnumerable<Func<TInput, Task<TResult>>> GetHandlers()
         {
-            foreach (var startHandler in StartHandlers)
+            lock (StartHandlers)
             {
-                yield return startHandler;
+                foreach (var startHandler in StartHandlers)
+                {
+                    yield return startHandler;
+                }
             }
-            foreach (var endHandler in EndHandlers)
+            lock (EndHandlers)
             {
-                yield return endHandler;
+                foreach (var endHandler in EndHandlers)
+                {
+                    yield return endHandler;
+                }
             }
         }
     }
