@@ -52,6 +52,7 @@ of JSON objects, in the form:
         "tag": "some_tag",
         "timestamp": 1459309227,
         "data": 3.141593
-    }
+    },
+    ... etc ...
 ]
 ```
