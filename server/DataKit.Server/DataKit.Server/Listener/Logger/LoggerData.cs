@@ -13,8 +13,7 @@ namespace DataKit.Server.Listener.Logger
 
         [JsonProperty("timestamp")]
         public DateTimeOffset Timestamp { get; }
-        public LoggerData(string rawData)
-        
+        public LoggerData(string rawData)        
         {
             var rawDataParts = rawData.Split(' ');t
             var tag = rawDataParts[1];
