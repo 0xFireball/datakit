@@ -93,10 +93,11 @@ while SENDING:
 Format:
 
 1. Lol (`>` character)
-1. Header (metadata)
-  - Sequence ID (reset when START received)
-1. Data
+1. _the following, delimited by_ `|` _chars:_
+   1. Tag (string)
+   1. UNIX timestamp
+   1. The data value (float)
 
 Example:
 
-`>16|1337.1337` + NEWLINE
+`>some_tag|1459309227|3.141593` + NEWLINE
