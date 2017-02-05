@@ -11,15 +11,109 @@
   <div id="dkbody">
 		<dkheader></dkheader>
 		<div class="ui grid" style="margin-left: 10px; margin-right: 10px; margin-top: -20px;">
-			<div class="ui segment sixteen wide column ">
+			<div class="ui segment sixteen wide column">
 				<h1>Collect Data</h1>
-        <canvas id="dataChart" width="100%" height="100px"></canvas>
+				<div class="ui stackable five column grid">
+
+					<!--Selectors and modifiers.-->
+					<div class="ui  five wide column">
+						<div class="ui labeled fluid input" >
+						  <div class="ui label">
+						    Time Scale
+						  </div>
+						  <input type="text" placeholder="10">
+						</div>
+						<br />
+						<div class="ui labeled fluid input">
+						  <div class="ui label">
+						    Temp Scale
+						  </div>
+						  <input type="text" placeholder="10">
+						</div>
+						<br />
+						<div class="ui labeled fluid input" >
+						  <div class="ui label">
+						    Light Scale
+						  </div>
+						  <input type="text" placeholder="1000">
+						</div>
+					</div>
+
+					<!--The Actual Chart.-->
+				  <div class="ui  eleven wide column">
+						<canvas id="myLineChart" width="100%" height="100%"></canvas>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
 
 	<script src="./index.js"></script>
+    <script>
+
+    x = 0;
+    maxPoints = 20
+
+    var options = {
+        title: {
+            display: true,
+            text: "Chart Title"
+        },
+
+        legend: {
+            display: true,
+            position: "right"
+            // take care of labels
+        },
+
+        scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom'
+            }]
+        },
+
+        animation: false
+    }
+    var data = {
+        datasets: [{
+            label: "Sample Dataset 1",
+            fill: false,
+            data: [
+            ]
+        }, {
+            label: "Sample Dataset 2",
+            fill: false,
+            data: [
+            ]
+        }]
+    }
+
+    var myLineChart = new Chart(document.getElementById("myLineChart"), {
+        type: 'line',
+        data: data,
+        options: options
+    });
+
+    setInterval( function () {
+        x++;
+        for (var i = 0; i < data.datasets.length; i++) {
+            data.datasets[i].data.push({x: x, y: Math.random() * 10.0});
+            if (data.datasets[i].data.length > maxPoints) data.datasets[i].data.shift();
+        }
+        updateChart();
+    },100);
+
+    var updateChart = function() {
+        myLineChart = new Chart(document.getElementById("myLineChart"), {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    }
+
+    </script>
 </body>
 
 </html>

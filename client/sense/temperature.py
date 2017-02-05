@@ -2,6 +2,8 @@ import os
 import glob
 import time
 
+from connect.sensor import Sensor
+
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
 
@@ -31,6 +33,8 @@ def read_temp():
 def readTempFahrenheit(): 
 	return read_temp()[1]
 
-while True: 
-	print(read_temp())
-	time.sleep(0.1)
+Sensor("Temperature", "F", readTempFahrenheit)
+
+#while True: 
+#	print(read_temp())
+#	time.sleep(0.1)
