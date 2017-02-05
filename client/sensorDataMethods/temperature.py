@@ -27,16 +27,10 @@ def read_temp():
 		temp_f = temp_c * 9.0 / 5.0 + 32.0 
 		return temp_c, temp_f
 
-def readTempCelcius(): 
-	return read_temp()[0]
+# MAIN FUNCTION
+def readTempFahrenheit(): 
+	return read_temp()[1]
 
 while True: 
 	print(read_temp())
-	time.sleep(1)
-
-
-
-A
-A
-
-
+	time.sleep(0.1)
