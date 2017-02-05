@@ -1,0 +1,44 @@
+<html>
+
+<body>
+	<title>Datakit</title>
+	<script src="./jquery-3.1.1.min.js"></script>
+	<script src="./vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="./semantic/dist/semantic.min.css">
+	<script src="./semantic/dist/semantic.min.js"></script>
+	<div id="dkbody">
+		<dkheader></dkheader>
+		<div class="ui grid" style="margin-left: 10px; margin-right: 10px; margin-top: -20px;">
+			<div class="ui segment six wide column centered">
+				<h1>Configure Settings</h1>
+				<form class="ui form">
+					<div class="field">
+				    <label>Server IP</label>
+				    <div class="one field">
+				      <div class="field">
+				        <input type="text" name="dk_rpi_ip" placeholder="IP">
+				      </div>
+				  	</div>
+					</div>
+					<div class="field">
+				    <label>Server Port</label>
+				    <div class="one field">
+				      <div class="field">
+				        <input type="text" name="dk_rpi_port" placeholder="Port">
+				      </div>
+				  	</div>
+					</div>
+				</form>
+				<div class="ui button blue" onclick="dk.saveConfig()">
+					Save
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="./index.js"></script>
+</body>
+
+</html>
