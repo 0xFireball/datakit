@@ -15,7 +15,7 @@ namespace DataKit.Server.Web
                 HttpStatusCode.NotFound,
                 HttpStatusCode.InternalServerError
             )));
-            app.UseWebSockets();
+            // app.UseWebSockets();
         }
     }
 }

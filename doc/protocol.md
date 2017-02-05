@@ -92,10 +92,11 @@ while SENDING:
 
 Format:
 
+1. Lol (`>` character)
 1. Header (metadata)
   - Sequence ID (reset when START received)
 1. Data
 
 Example:
 
-`16|1337.1337` + NEWLINE
+`>16|1337.1337` + NEWLINE

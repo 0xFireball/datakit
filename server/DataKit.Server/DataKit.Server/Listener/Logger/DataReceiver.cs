@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using DataKit.Server.Listener.Client;
 
 namespace DataKit.Server.Listener.Logger
@@ -19,10 +20,17 @@ namespace DataKit.Server.Listener.Logger
         {
             await Task.Run(async () =>
             {
-                while (_collecting)
+                var data = await _client.Input.ReadLineAsync();
+                if (data.StartsWith(">", StringComparison.Ordinal))
                 {
-                    var data = await _client.Input.ReadLineAsync();
-                    Channel.Data.Add(data);
+                    if (_collecting)
+                    {
+                        Channel.Data.Add(data);
+                    }
+                }
+                else if (data == "$P")
+                {
+                    _client.LastHeartbeat = DateTime.Now;
                 }
             });
         }

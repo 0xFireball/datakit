@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
@@ -28,5 +29,8 @@ namespace DataKit.Server.Listener.Client
 
         [JsonProperty("dataType")]
         public string DataType { get; set; }
+
+        [JsonProperty("lastHeartbeat")]
+        public DateTime LastHeartbeat { get; set; }
     }
 }
