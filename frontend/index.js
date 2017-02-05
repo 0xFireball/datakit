@@ -54,6 +54,7 @@ var dk = {
 
             //Assemble Chart
 
+
             var deviceList = getQueryParams("devices").split(",");
             var deviceName = getQueryParams("names").split(",");
             console.log(deviceList);
@@ -102,7 +103,11 @@ var dk = {
             }
         },
         data: {
-            deviceConnections: []
+            deviceConnections: [],
+            chart: null,
+            init: function() {
+                
+            }
         }
     }
 };
