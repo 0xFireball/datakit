@@ -48,7 +48,7 @@ class Sensor(object):
     def read_data(self):
         self.go = True
         while self.go:
-            data = ('>%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
+            data = ('>|%s|%s|%s\n'%("bullshite",int(time.time()*1000),float(self.get_data()),))
             self.sock.sendall(data.encode())
             print(data)
             time.sleep(1)
