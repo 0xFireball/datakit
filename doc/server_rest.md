@@ -43,4 +43,15 @@ Tells the server to stop receiving data on that channel.
 
 GET `/channel/{id}/getdata`
 
-Receives all the data currently on the channel.
+Receives all the data currently on the channel. This is an array
+of JSON objects, in the form:
+
+```json
+[
+    {
+        "tag": "some_tag",
+        "timestamp": 1459309227,
+        "data": 3.141593
+    }
+]
+```
