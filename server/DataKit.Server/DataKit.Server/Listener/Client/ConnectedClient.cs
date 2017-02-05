@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace DataKit.Server.Listener.Client
@@ -21,6 +22,19 @@ namespace DataKit.Server.Listener.Client
             Input = inputStream;
             Output = outputStream;
             Socket = sock;
+            StartEventLoop();
+        }
+
+        private async Task StartEventLoop()
+        {
+            await Task.Run(async () =>
+            {
+                var data = await Input.ReadLineAsync();
+                if (data == "$P\n")
+                {
+                    LastHeartbeat = DateTime.Now;
+                }
+            });
         }
 
         [JsonProperty("id")]
