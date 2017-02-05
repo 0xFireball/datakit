@@ -16,7 +16,7 @@ namespace DataKit.Server.Web
                 HttpStatusCode.InternalServerError
             )));
             app.UseWebSockets();
-            app.Use(SocketHandler.AcceptWebSocketClients)
+            app.Use(WebSocketHandler.AcceptWebSocketClients);
         }
     }
 }

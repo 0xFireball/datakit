@@ -20,7 +20,10 @@ namespace DataKit.Server.Web
 
         public async Task EventLoop()
         {
-            
+            while (_ws.State == WebSocketState.Open)
+            {
+
+            }
         }
 
         public static async Task AcceptWebSocketClients(HttpContext hc, Func<Task> n)
