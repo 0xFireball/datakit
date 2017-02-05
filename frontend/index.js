@@ -111,7 +111,7 @@ var ws = new WebSocket("ws://localhost:5000/ws");
 ws.onopen = function () {
     // Web Socket is connected, send data using send()
     console.log("sending");
-    ws.send(">fa79c74711814fd2af95613898bf924d\n");
+    ws.send(">08d1198e812e4237ba418edac118cc88\n");
 };
 
 ws.onmessage = function (evt) {
