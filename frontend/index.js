@@ -96,10 +96,10 @@ var dk = {
 
 
 var configLoaded = function (conf) {
-    config = JSON.parse(conf);
+    /*config = JSON.parse(conf);
     console.log(config);
     var page = window.location.pathname.split("/").pop();
-    page = page.slice(0, page.length - 5);
+    page = page.slice(0, page.length - 5);*/
     dk.pages.global();
     /*try {
         dk.pages[page]();
