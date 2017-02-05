@@ -36,7 +36,7 @@ var dk = {
         global: function () {
             dk.utils.initStorage();
             config = JSON.parse(window.localStorage.dk);
-            $("dkheader").replaceWith('<div class="ui top fixed menu" style="position: static !important;"><a class="item" href="index.html"><strong>Data</strong>Kit</a><a class="item" href="devices.html">Devices</a><a class="item" href="config.html">Configure</a></div>');
+            $("dkheader").replaceWith('<div class="ui top fixed menu" style="position: static !important;"><a class="item" href="index.html"><strong>Data</strong>Kit</a><a class="item" href="config.html">Configure</a><a class="item" href="devices.html">Devices</a></div>');
         },
         devices: function () {
             $.get("http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port + "/r/connected", function (data) {
