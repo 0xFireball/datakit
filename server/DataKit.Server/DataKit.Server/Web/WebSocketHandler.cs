@@ -66,5 +66,11 @@ namespace DataKit.Server.Web
             var h = new WebSocketHandler(ws);
             await h.EventLoop();
         }
+
+        public static void Map(IApplicationBuilder app)
+        {
+            app.UseWebSockets();
+            app.Use(WebSocketHandler.AcceptWebSocketClients);
+        }
     }
 }
