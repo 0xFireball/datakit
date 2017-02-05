@@ -40,7 +40,7 @@ var dk = {
         devices: function () {
             $.get("http://" + config.dk_rpi_ip + ":" + config.dk_rpi_port + "/r/connected", function (data) {
                 data.forEach(function (device) {
-                    $("#deviceList").append("<tr><td>" + device.name + "</td><td>" + device.units + "</td><td class='ui checkbox'><input type='checkbox' name='" + device.id + "'><label>Include</label></td></tr>");
+                    $("#deviceList").append("<tr><td>" + device.name + "</td><td>" + device.units + "</td><td class='ui checkbox'><input type='checkbox' name='" + device.id + "' device_name='" + device.name  + "'><label>Include</label></td></tr>");
                 });
                 $(".checkbox").checkbox();
             });
@@ -63,6 +63,7 @@ var dk = {
                         newObj.ws.send(">" + newObj.channel + "\n");
                     };
                     newObj.ws.onmessage = function(evt) {
+                        console.log(newObj.channel);
                         console.log(evt.data);
                     };
                     dk.pageFunctions.data.deviceConnections.push(newObj);
